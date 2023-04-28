@@ -1,7 +1,5 @@
 import mysql.connector
-from faker import Faker
-import random
-import datetime
+
 
 config =config = {
         'user': 'root',
@@ -14,21 +12,33 @@ conn = mysql.connector.connect(**config)
 cursor = conn.cursor()
 
 criar_tabela_usuario = """
-CREATE TABLE usuario (
+CREATE TABLE usuarios (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  nome VARCHAR(255),
-  dtnascimento DATE,
-  tipo VARCHAR(255),
-  curso VARCHAR(255)
+  nome varchar(64),
+    dtnascimento date,
+    tipo varchar(30),
+    curso varchar(100000)
 )
 """
 
-criar_tabela_livros ="""
+criar_tabela_livros = """
 CREATE TABLE livros (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    isbn VARCHAR(255),
-    titulo VARCHAR(255),
-    ano_de_publicacao INT,
-    area_de_conhecimento VARCHAR(255)
-)
-"""
+titulo varchar(100),
+    isbn integer,
+    area varchar(30),
+    ano_publicacao smallint
+);"""
+
+criar_tabela_emprestimo = """
+CREATE TABLE emprestimos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+id_usuario integer NOT NULL,
+    id_livro integer NOT NULL,
+    dtemprestimo date,
+    hremprestimo time,
+    dtdevolucao date,
+    hrdevolucao time,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios (id),
+    FOREIGN KEY (id_livro) REFERENCES livros (id)
+);"""

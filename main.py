@@ -1,8 +1,17 @@
-import faker
 import mysql.connector
-import uteis
 import gerador
 
+
+def select(cursor):
+    for row in cursor:
+        print(row, '\n')
+
+
+def returned_data(cursor):
+    count = 0
+    for row in cursor:
+        count += 1
+    print(count, 'registros retornados')
 
 
 config = {
@@ -25,10 +34,10 @@ else:
     print('Não foi possível conectar ao banco de dados')
 
 while True:
-    opcoes = input('Digite 1 para gerar dados, 2 para consultar dados, 3 para quantidade de dados, 4 para sair: ')
+    opcoes = input('Digite 1 para gerar dados\n2 para consultar dados\n3 para quantidade de dados\n4 para sair:\n ')
 
     if opcoes == '1':
-        opcao = input('Digite 1 para gerar dados de usuário, 2 para gerar dados de livro, 3 para gerar dados de empréstimo: ')
+        opcao = input('Digite 1 para gerar dados de usuário\n2 para gerar dados de livro\n3 para gerar dados de empréstimo:\n ')
 
         if opcao == '1':
             quantidade = int(input('Digite a quantidade de usuários que deseja gerar: '))
@@ -36,7 +45,7 @@ while True:
 
             for i in range(quantidade):
                 usuario = gerador.gerar_user()
-                cursor.execute("INSERT INTO usuario (nome, dtnascimento, tipo, curso) VALUES (%s, %s, %s, %s)", usuario)
+                cursor.execute("INSERT INTO usuarios (nome, dtnascimento, tipo, curso) VALUES (%s, %s, %s, %s)", usuario)
                 conn.commit()
 
         elif opcao == '2':
@@ -45,7 +54,7 @@ while True:
 
             for i in range(quantidade):
                 livro = gerador.gerar_livro()
-                cursor.execute("INSERT INTO livros (isbn, titulo, ano_de_publicacao, area_de_conhecimento) VALUES (%s, %s, %s, %s)", livro)
+                cursor.execute("INSERT INTO livros (isbn, titulo, ano_publicacao, area) VALUES (%s, %s, %s, %s)", livro)
                 conn.commit()
 
         elif opcao == '3':
@@ -54,38 +63,38 @@ while True:
 
             for i in range(quantidade):
                 emprestimo = gerador.gerar_emprestimo()
-                cursor.execute("INSERT INTO emprestimo1 (id_livros, id_usuario, data_emprestimo, hora_emprestimo, data_devolucao, horario_devolucao) VALUES (%s, %s, %s, %s, %s, %s)", emprestimo)
+                cursor.execute("INSERT INTO emprestimos (id_livro, id_usuario, dtemprestimo, hremprestimo , dtdevolucao, hrdevolucao) VALUES (%s, %s, %s, %s, %s, %s)", emprestimo)
                 conn.commit()
 
     elif opcoes == '2':
-        opcao = input('Digite 1 para consultar dados de usuário, 2 para consultar dados de livro, 3 para consultar dados de empréstimo: ')
+        opcao = input('Digite 1 para consultar usuários\n2 para consultar livros\n3 para consultar empréstimos:\n ')
 
         if opcao == '1':
-            cursor.execute("SELECT * FROM usuario")
-            uteis.select(cursor)
+            cursor.execute("SELECT * FROM usuarios")
+            select(cursor)
 
         elif opcao == '2':
             cursor.execute("SELECT * FROM livros")
-            uteis.select(cursor)
-
-        elif opcao == '3':
-            cursor.execute("SELECT * FROM emprestimo1")
-            uteis.select(cursor)
-
-    elif opcoes == '3':
-        opcao = input('Digite 1 para consultar quantidade de usuários, 2 para consultar quantidade de livros, 3 para consultar quantidade de empréstimos: ')
-
-        if opcao == '1':
-            cursor.execute("SELECT * FROM usuario")
-            uteis.returned_data(cursor)
-
-        elif opcao == '2':
-            cursor.execute("SELECT * FROM livro")
-            uteis.returned_data(cursor)
+            select(cursor)
 
         elif opcao == '3':
             cursor.execute("SELECT * FROM emprestimos")
-            uteis.returned_data(cursor)
+            select(cursor)
+
+    elif opcoes == '3':
+        opcao = input('Digite 1 para consultar quantidade de usuários\n2 para consultar quantidade de livros\n3 para consultar quantidade de empréstimos:\n ')
+
+        if opcao == '1':
+            cursor.execute("SELECT * FROM usuarios")
+            returned_data(cursor)
+
+        elif opcao == '2':
+            cursor.execute("SELECT * FROM livros")
+            returned_data(cursor)
+
+        elif opcao == '3':
+            cursor.execute("SELECT * FROM emprestimos")
+            returned_data(cursor)
 
     elif opcoes == '4':
         break

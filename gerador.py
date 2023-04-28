@@ -1,7 +1,9 @@
 import faker
 import random
 import datetime
-import uteis
+
+
+
 
 def gerar_user():
     fake = faker.Faker('pt_BR')
@@ -23,19 +25,19 @@ def gerar_livro():
     fake = faker.Faker('pt_BR')
     isbn = fake.isbn13()
     isbn = str(isbn)
-    area_de_conhecimento = random.choice(['Banco de Dados', 'Análise e Desenvolvimento de Sistemas', 'Desenvolvimento Web'])
+    area = random.choice(['Banco de Dados', 'Análise e Desenvolvimento de Sistemas', 'Desenvolvimento Web'])
     titulo = fake.sentence(nb_words=6, variable_nb_words=True, ext_word_list=None)
-    ano_de_publicacao = fake.year()
+    ano_publicacao = fake.year()
 
-    return isbn, titulo, ano_de_publicacao, area_de_conhecimento
+    return isbn, titulo, ano_publicacao, area
 
 def gerar_emprestimo():
     fake = faker.Faker('pt_BR')
-    hora_emprestimo = fake.time(pattern='%H:%M:%S', end_datetime=None)
-    data_emprestimo = datetime.date.today() + datetime.timedelta(days=random.randint(1, 30))
-    horario_devolucao = fake.time(pattern='%H:%M:%S', end_datetime=None)
-    data_devolucao = data_emprestimo + datetime.timedelta(days=random.randint(1, 30))
-    id_livros = random.randint(1, 400)
+    hremprestimo  = fake.time()
+    dtemprestimo = datetime.date.today() + datetime.timedelta(days=random.randint(1, 30))
+    hrdevolucao = fake.time()
+    dtdevolucao = dtemprestimo + datetime.timedelta(days=random.randint(1, 30))
+    id_livro = random.randint(1, 400)
     id_usuario = random.randint(1, 600)
 
-    return hora_emprestimo, data_emprestimo, horario_devolucao, data_devolucao, id_livros, id_usuario
+    return id_livro, id_usuario, dtemprestimo, hremprestimo , dtdevolucao, hrdevolucao
